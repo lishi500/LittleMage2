@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3281667785202555386
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3281667785202555388}
+  - component: {fileID: 3281667785202555387}
+  m_Layer: 0
+  m_Name: Blizard
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3281667785202555388
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3281667785202555386}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -12.668702, y: 1.0841253, z: -21.486744}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3281667785202555387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3281667785202555386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 017a53e3bdb4f1049a2ecade0525107f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: Blizard
+  CD: 5
+  duration: 1
+  baseValue: 50
+  factor: 1.2
+  loopCast: 0
+  isChannelSkill: 0
+  type: 0
+  hasEffectController: 0
+  hasCollisionController: 0
+  needTarget: 1
+  CDLeft: 3.4152896
+  owner: {fileID: 0}
+  skillControllerObj: {fileID: 0}
+  effectChains:
+  - effect: {fileID: 183924, guid: 0b308db01bc3ccb46a58960fba612974, type: 3}
+    duration: 1
+    positionType: 1
+    delay: 0
+    xOffSet: 0
+    yOffSet: 0
+    useRoleFacing: 1
+    followCaster: 0
+  colliderChains:
+  - type: 0
+    radius: 5
+    delay: 0
+    duration: 0.3
+    isTrigger: 1
+  triggeredBuffDefs:
+  - buffObj: {fileID: 5921271496998147863, guid: 24d4324aaa1da324294b4dc241fabd9b,
+      type: 3}
+    overrideExisting: 0
+    duration: 0
+    frequency: 0
+    value: 0
+    factor: 0
+  onApplyBuffDefs: []
+  OnTriggerEffect:
+    effect: {fileID: 2859547069964035380, guid: eef272a6ac047c94fb851a534c340cc7,
+      type: 3}
+    duration: 1
+  triggerType: 0

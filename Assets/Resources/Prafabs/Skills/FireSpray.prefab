@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6081697654145238912
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7118805510951470927}
+  - component: {fileID: 5288217104109031579}
+  m_Layer: 0
+  m_Name: FireSpray
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7118805510951470927
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6081697654145238912}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.25, y: 1.01, z: 1.5230001}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5288217104109031579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6081697654145238912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 518fe43e889d5584b8b6b9eeff4fbd12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: FireSpray
+  CD: 5
+  duration: 3
+  baseValue: 5
+  factor: 0.2
+  loopCast: 0
+  isChannelSkill: 1
+  type: 0
+  shootPointPosition: 1
+  hasEffectController: 0
+  hasCollisionController: 1
+  needTarget: 0
+  CDLeft: 0.61973715
+  owner: {fileID: 0}
+  skillControllerObj: {fileID: 0}
+  effectChains:
+  - effect: {fileID: 100002, guid: 0e4c3e38b39f63b418ffcf6ff0ea10fc, type: 3}
+    duration: 3
+    positionType: 3
+    delay: 0.1
+    xOffSet: 0
+    yOffSet: 0
+    useRoleFacing: 1
+    followRole: 1
+  colliderChains: []
+  triggeredBuffDefs:
+  - buffObj: {fileID: 2631772696717252813, guid: c194fc96da9f2ec4e93ea4ffbcbf4b7f,
+      type: 3}
+    overrideExisting: 0
+    duration: 0
+    frequency: 0
+    value: 0
+    factor: 0
+  onApplyBuffDefs: []
+  OnTriggerEffect:
+    effect: {fileID: 961121886678634444, guid: 6a94222118e9cbe4ebfc635eab643ec4, type: 3}
+    duration: 1
+  triggerType: 0
+  maxDistance: 20
+  density: 20
+  colliderTags:
+  - Enemy
+  sprayAngleWidth: 20
+  sprayAngleHeight: 20
+  triggerFrequency: 0.15

@@ -1,0 +1,21 @@
+﻿public enum AttributeType
+{
+    ATTACK,
+    ATTACK_ADDER,
+    ATTACK_MODIFIER,
+
+    ATTACK_SPEED,
+    ATTACK_SPEED_MODIFIER,
+
+    CRITICAL_CHANGE,
+    CRITICAL_CHANGE_ADDER,
+
+    MOVE_SPEED,
+    MOVE_SPEED_MODIFIER,
+
+    //DEFENCE,
+    DAMAGE_REDUCE,
+
+    MAX_HP,
+    SHIELD
+}

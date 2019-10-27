@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4918943735269137613
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8668955449937478114}
+  - component: {fileID: 8026768888839346451}
+  m_Layer: 0
+  m_Name: LightningStrick
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8668955449937478114
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4918943735269137613}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.2237473, y: 0.46506375, z: -25.48365}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8026768888839346451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4918943735269137613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 954c1664dac7ffd40991749eb2bb5e06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillName: LightningStrick
+  CD: 5
+  duration: 0.5
+  baseValue: 0
+  factor: 1.5
+  loopCast: 0
+  isChannelSkill: 0
+  type: 0
+  hasEffectController: 0
+  hasCollisionController: 1
+  needTarget: 1
+  CDLeft: 2.359265
+  owner: {fileID: 0}
+  skillControllerObj: {fileID: 0}
+  effectChains:
+  - effect: {fileID: 1738069584627344225, guid: 3bb5c5c034babf7408a53f4e684788bb,
+      type: 3}
+    duration: 0.5
+    positionType: 1
+    delay: 0
+    xOffSet: 0
+    yOffSet: 0
+    useRoleFacing: 0
+    followRole: 1
+  colliderChains: []
+  triggeredBuffDefs: []
+  onApplyBuffDefs:
+  - buffObj: {fileID: 5501118437966373470, guid: 9ab67bfc1745e8240b33af8c67e79576,
+      type: 3}
+    overrideExisting: 0
+    duration: 0
+    frequency: 0
+    value: 0
+    factor: 0
+  OnTriggerEffect:
+    effect: {fileID: 0}
+    duration: 1
+  triggerType: 3

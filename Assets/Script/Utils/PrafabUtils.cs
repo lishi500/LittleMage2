@@ -39,8 +39,6 @@ public class PrafabUtils : MonoBehaviour {
         return prafabObj;
     }
 
-   
-
     public GameObject create(string path, Vector3 position, GameObject parentObj)
     {
 

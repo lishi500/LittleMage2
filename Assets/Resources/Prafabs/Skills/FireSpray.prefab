@@ -43,26 +43,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 518fe43e889d5584b8b6b9eeff4fbd12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: FireSpray
-  CD: 5
+  skillData: {fileID: 0}
   duration: 3
   baseValue: 5
   factor: 0.2
+  castRange: 3.4028235e+38
+  damageType: 2
   loopCast: 0
   isChannelSkill: 1
-  type: 0
   shootPointPosition: 1
   hasEffectController: 0
   hasCollisionController: 1
   needTarget: 0
+  isTargetAllies: 0
   CDLeft: 0.61973715
   owner: {fileID: 0}
   skillControllerObj: {fileID: 0}
   effectChains:
   - effect: {fileID: 100002, guid: 0e4c3e38b39f63b418ffcf6ff0ea10fc, type: 3}
     duration: 3
-    positionType: 3
     delay: 0.1
+    positionType: 3
     xOffSet: 0
     yOffSet: 0
     useRoleFacing: 1
@@ -77,9 +78,19 @@ MonoBehaviour:
     value: 0
     factor: 0
   onApplyBuffDefs: []
+  OnCastEffect:
+    effect: {fileID: 0}
+    duration: 1
+    delay: 0.1
   OnTriggerEffect:
     effect: {fileID: 961121886678634444, guid: 6a94222118e9cbe4ebfc635eab643ec4, type: 3}
     duration: 1
+    delay: 0.1
+  skillAnimations:
+    hasCustomSkillAnimation: 0
+    useSkillId: 1
+    isExclusiveAnimation: 1
+    animationNames: []
   triggerType: 0
   maxDistance: 20
   density: 20

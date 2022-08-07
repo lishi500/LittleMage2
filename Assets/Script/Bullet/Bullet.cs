@@ -48,7 +48,6 @@ public class Bullet : MonoBehaviour
     protected Collider bulletCollider;
     private Vector3 originalPoint;
     private float returnMagnitude;
-    private CommonUtils commonUtils;
     protected DamageUtils damageUtils;
     protected SmartMissile3D smartMissile;
 
@@ -58,7 +57,7 @@ public class Bullet : MonoBehaviour
 
         GameObject hit = collision.gameObject;
         contactPoint = collision.contacts[0];
-        if (hit.tag == creatorRole.GetEnemyTag())
+        if (creatorRole.GetEnemyTags().Contains(hit.tag))
         {
             ApplyFinalDamage(hit);
 
@@ -144,11 +143,10 @@ public class Bullet : MonoBehaviour
         }
     }
 
-
     public void ApplyFinalDamage(GameObject hitObject)
     {
         Role hitRole = hitObject.GetComponent<Role>();
-        if (hitRole != null && hitObject.tag == creatorRole.GetEnemyTag()) {
+        if (hitRole != null && creatorRole.GetEnemyTags().Contains(hitObject.tag)) {
             hitRole.ReduceHealth(Damage(hitRole));
             hittedObjects.Add(hitObject);
             StopTracking();
@@ -215,9 +213,9 @@ public class Bullet : MonoBehaviour
 
             //yield return new WaitForSeconds(0.15f);
 
-            string enemyTag = creator.GetComponent<Role>().GetEnemyTag();
+            string[] enemyTags = creator.GetComponent<Role>().GetEnemyTags();
 
-            GameObject[] enemies = commonUtils.GetObjectWithInRadius(contactPoint.point, enhancement.explodeRadius, enemyTag);
+            GameObject[] enemies = CommonUtils.Instance.GetObjectWithInRadius(contactPoint.point, enhancement.explodeRadius, enemyTags);
             
 
             foreach (GameObject enemy in enemies) {
@@ -252,7 +250,7 @@ public class Bullet : MonoBehaviour
     }
     private GameObject[] GetEnemiesWithInRadius(float radius)
     {
-        GameObject[] allEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject[] allEnemies = GameObject.FindGameObjectsWithTag(TagMapping.Enemy.ToString());
 
         return allEnemies.Where(enemy => {
             float distance = Distance(gameObject, enemy);
@@ -331,7 +329,6 @@ public class Bullet : MonoBehaviour
     {
         hittedObjects = new List<GameObject>();
         GameObject gameManager = GameObject.FindGameObjectWithTag("GameController");
-        commonUtils = gameManager.GetComponentInChildren<CommonUtils>();
         damageUtils = gameManager.GetComponentInChildren<DamageUtils>();
     }
 
@@ -394,7 +391,8 @@ public class Bullet : MonoBehaviour
             smartMissile.m_searchAngle = enhancement.trackingAngle;
             smartMissile.m_canLooseTarget = true;
             smartMissile.m_guidanceIntensity = enhancement.trackingIntensity;
-            smartMissile.TargetTag = creatorRole.GetEnemyTag();
+            // TODO multiple targets
+            smartMissile.TargetTag = creatorRole.GetEnemyTags()[0];
             //smartMissile.m_targetOffset = m_config.m_targetOffset;
             //smartMissile.m_distanceInfluence = m_config.m_selectedPreset;
         }
@@ -408,7 +406,7 @@ public class Bullet : MonoBehaviour
     private void RestarTracking() {
         if (smartMissile != null)
         {
-            smartMissile.TargetTag = creatorRole.GetEnemyTag();
+            smartMissile.TargetTag = creatorRole.GetEnemyTags()[0];
         }
     }
 

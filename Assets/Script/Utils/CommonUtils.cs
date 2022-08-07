@@ -1,18 +1,27 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class CommonUtils : MonoBehaviour
+public class CommonUtils : Singleton<CommonUtils>
 {
-    public GameObject[] GetObjectWithInRadius(Vector3 central, float radius, string tag)
+    public GameObject[] GetObjectWithInRadius(Vector3 central, float radius, string[] tags)
     {
-        GameObject[] allEnemies = GameObject.FindGameObjectsWithTag(tag);
-
-        return allEnemies.Where(enemy => {
+        List<GameObject> allObjects = new List<GameObject>();
+        foreach (string tag in tags) {
+            GameObject[] objs = GameObject.FindGameObjectsWithTag(tag);
+            allObjects.AddRange(objs);
+        }
+           
+        return allObjects.Where(enemy => {
             float distance = Distance(central, enemy.transform.position);
             return distance <= radius;
         }).ToArray<GameObject>();
+    }
+
+    public bool IsPositionZero(Vector3 position) {
+        return position.x == 0 && position.y == 0 && position.z == 0;
     }
 
     private float Distance(GameObject a, GameObject b)
@@ -37,5 +46,7 @@ public class CommonUtils : MonoBehaviour
             ps.Play();
         }
     }
+
+
 
 }

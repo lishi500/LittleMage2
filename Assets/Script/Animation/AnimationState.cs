@@ -18,5 +18,15 @@ public enum AnimationState
     CHANNELING_LOOP,
     DEFENCE1,
     GET_HIT,
-    DIE
+    DIE,
+    
+    // Dragon state
+    FLY,
+    PLAY,
+
+    // Parameter
+    RANDOM_100,
+    FLY_PROGRESS,
+    SKILL_ANIMATION
+
 }

@@ -57,7 +57,7 @@ public class AttackController : MonoBehaviour
     {
         //Debug.Log("Attack Fired: " + Time.time + "  - > " + state );
        
-        if (state == "Trigger")
+        if (state == "Trigger" && target != null)
         {
             isAttacking = true;
             Transform shootpoint = GetNextAttackShootPoint();
@@ -65,6 +65,7 @@ public class AttackController : MonoBehaviour
             {
                 //Debug.Log("Shoot Orb  !!!");
                 shootController.ShootOrb(nextObrBullet, gameObject, shootpoint, target);
+                player.uISkillController.FlushSpellSlot();
 
                 // reset orb
                 playerController.nextOrbSkill = null;
@@ -147,11 +148,6 @@ public class AttackController : MonoBehaviour
         
     }
 
-    public float GetAttackRate()
-    {
-        return 10 / player.attribute.attackSpeed;
-    }
-
     public void ResetCount() {
         attackCount = 0;
         isAttacking = false;
@@ -168,7 +164,7 @@ public class AttackController : MonoBehaviour
 
     public bool CanAttack()
     {
-        if (player.CanAttack() && Time.time >= lastAttackTimer + GetAttackRate())
+        if (player.CanAttack() && Time.time >= lastAttackTimer + player.GetAttackRate())
         {
 
             return true;

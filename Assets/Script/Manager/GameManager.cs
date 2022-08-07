@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public GameObject utilManager;
     AIUtils aiUtils;
 
-    public GameObject playerObj;
+
     public SkillTriggerCount skillTriggerCount;
 
     private void Awake()
@@ -17,9 +17,9 @@ public class GameManager : MonoBehaviour
         utilManager = transform.Find("UtilManager").gameObject;
         aiUtils = utilManager.GetComponent<AIUtils>();
 
-        playerObj = GameObject.FindGameObjectWithTag("Player");
+        // TODO reposition to gameState
         skillTriggerCount = new SkillTriggerCount();
-        skillTriggerCount.player = playerObj.GetComponent<Player>();
+        skillTriggerCount.player = Finder.Instance.GetPlayer();
     }
     void Start()
     {

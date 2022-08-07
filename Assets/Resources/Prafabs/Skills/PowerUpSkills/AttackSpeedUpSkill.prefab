@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2127555179994422946
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2127555179994422948}
+  - component: {fileID: 668080161328308593}
+  m_Layer: 0
+  m_Name: AttackSpeedUpSkill
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2127555179994422948
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2127555179994422946}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.466656, y: -18.309996, z: 0.47647157}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &668080161328308593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2127555179994422946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed31e2ecb8dc6d04489b2d1b44cf768c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillData: {fileID: 11400000, guid: a4c1d89a80fc22549b57ddfe25f04a0b, type: 2}
+  duration: 0
+  baseValue: 0
+  factor: 0
+  damageType: 0
+  loopCast: 0
+  isChannelSkill: 0
+  shootPointPosition: 0
+  hasEffectController: 0
+  hasCollisionController: 0
+  needTarget: 1
+  CDLeft: 3.1787362
+  owner: {fileID: 0}
+  skillControllerObj: {fileID: 0}
+  effectChains: []
+  colliderChains: []
+  triggeredBuffDefs: []
+  onApplyBuffDefs:
+  - buffObj: {fileID: 3610278355164012255, guid: d204c54af4c0143438f1576bb253abc1,
+      type: 3}
+    overrideExisting: 0
+    duration: 0
+    frequency: 0
+    value: 0
+    factor: 0
+  OnCastEffect:
+    effect: {fileID: 0}
+    duration: 1
+  OnTriggerEffect:
+    effect: {fileID: 0}
+    duration: 1

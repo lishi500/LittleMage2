@@ -1,4 +1,5 @@
-﻿using ECM.Controllers;
+﻿using DigitalRubyShared;
+using ECM.Controllers;
 using ECM.Helpers;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,16 +9,24 @@ public class PlayerMovementController : BaseCharacterController
 {
     public bool _isMoving = false;
     Player player;
+    float xDirection;
+    float zDirection;
 
     protected override void HandleInput()
     {
         if (player.CanMove())
         {
+            //moveDirection = new Vector3
+            //{
+            //    x = Input.GetAxisRaw("Horizontal"),
+            //    y = 0.0f,
+            //    z = Input.GetAxisRaw("Vertical")
+            //};
             moveDirection = new Vector3
             {
-                x = Input.GetAxisRaw("Horizontal"),
+                x = xDirection,
                 y = 0.0f,
-                z = Input.GetAxisRaw("Vertical")
+                z = zDirection
             };
 
             if ((moveDirection.x == 0 && moveDirection.z == 0))
@@ -32,6 +41,12 @@ public class PlayerMovementController : BaseCharacterController
         else {
             _isMoving = false;
         }
+    }
+
+    private void JoystickExecuted(FingersJoystickScript script, Vector2 amount)
+    {
+        xDirection = amount.x;
+        zDirection = amount.y;
     }
 
     protected override void UpdateRotation()
@@ -53,5 +68,8 @@ public class PlayerMovementController : BaseCharacterController
         player = GetComponent<Player>();
         player.attribute.notifyMoveSpeedChange += OnMoveSpeedChange;
         speed = player.attribute.moveSpeed;
+
+        FingersJoystickScript joyStick = UIFinder.Instance.GetJoyStick();
+        joyStick.JoystickExecuted = JoystickExecuted;
     }
 }

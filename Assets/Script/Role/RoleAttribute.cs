@@ -6,8 +6,29 @@ using UnityEngine;
 [Serializable]
 public class RoleAttribute
 {
-    public int level;
-    public float maxHP;
+    public int level = 1;
+    public int exp = 0;
+
+    [SerializeField]
+    private float _maxHP;
+    public float maxHP {
+        get { return _maxHP * maxHpModifier; }
+    }
+
+    public void AddMaxHP(float HP) {
+        _maxHP += HP;
+    }
+    public void RemoveMaxHP(float HP) {
+        _maxHP -= HP;
+    }
+
+    [SerializeField]
+    private float _maxHpModifier = 1;
+    public float maxHpModifier
+    {
+        get { return _maxHpModifier; }
+        set { _maxHpModifier = value; }
+    }
 
     [SerializeField]
     private float _attack;
@@ -16,6 +37,7 @@ public class RoleAttribute
         set { _attack = value; }
     } // also magic
 
+    [SerializeField]
     private float _attackAdder = 0;
     public float attackAdder
     {
@@ -23,6 +45,7 @@ public class RoleAttribute
         set { _attackAdder = value; }
     } // also magic
 
+    [SerializeField]
     private float _attackModifier = 1;
     public float attackModifier
     {
@@ -118,7 +141,9 @@ public class RoleAttribute
     }
 
     public float shield;
-    public int exprience;
+    public float fixShield;
+    public float dodge;
+
     public float toughness = 0.75f; // 2 is hardcore 
 
 

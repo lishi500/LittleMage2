@@ -6,5 +6,7 @@ public enum ColliderType
 {
     Sphere,
     Box,
-    Capsule
+    Capsule,
+    Line,
+    Fan
 }

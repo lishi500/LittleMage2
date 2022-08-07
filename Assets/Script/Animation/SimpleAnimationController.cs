@@ -33,6 +33,9 @@ public class SimpleAnimationController : CustomAnimationController
                 case AnimationState.GET_HIT:
                     SetBoolState("get_hit");
                     break;
+                case AnimationState.DIE:
+                    SetBoolState("die");
+                    break;
                 default:
                     SetBoolState("");
                     break;

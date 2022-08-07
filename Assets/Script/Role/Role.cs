@@ -23,7 +23,7 @@ abstract public class Role : MonoBehaviour
     //[HideInInspector]
     public bool isChanneling;
 
-    public AlignmentType alignment;
+    public RoleType roleType;
 
     public List<Skill> skills;
     [SerializeField]
@@ -32,13 +32,21 @@ abstract public class Role : MonoBehaviour
     public bool isRange;
     public float attackDistance;
 
+    public RoleFlag roleFlag;
+    public float maxAttackGapFactor = 1;
+    public bool attackIgnoreObstacle;
+
+    public CustomAnimationController animationController;
     public StatusManager statusManager = new StatusManager();
+
     private SimpleEventHelper eventHelper;
+    private TextUtils textUtils;
+    protected PrafabHolder prafabHolder;
 
     public delegate void StatusChangeDelegate(RoleStatus status);
     public event StatusChangeDelegate notifyStatusChange;
 
-    public delegate void DieDelegate(float isDied);
+    public delegate void DieDelegate();
     public event DieDelegate notifyDied;
 
     public float AddHealth(float amount) {
@@ -48,9 +56,26 @@ abstract public class Role : MonoBehaviour
             {
                 HP = attribute.maxHP;
             }
+            if (amount > 0) {
+                GetTextUtils().AddDamageEntry(transform, new DamageDef(amount, false, DamageType.HEAL));
+            }
         }
        
         return HP;
+    }
+
+    public void SetHealth(float amount) {
+        if (isAlive)
+        {
+            HP = amount;
+            if (HP > attribute.maxHP)
+            {
+                HP = attribute.maxHP;
+            }
+            if (HP <= 0) {
+                Die();
+            }
+        }
     }
 
     public float ReduceHealth(DamageDef damageDef) {
@@ -69,14 +94,14 @@ abstract public class Role : MonoBehaviour
 
             HP -= amount;
             if (amount > 0) {
-                TextUtils.DamageText(transform, amount, isCritical, type);
+                GetTextUtils().AddDamageEntry(transform, new DamageDef(amount, isCritical, type));
+                //TextUtils.DamageText(transform, amount, isCritical, type);
                 eventHelper.OnGetHit(new DamageDef(amount, isCritical, type));
             }
 
             if (HP <= 0)
             {
-                HP = 0;
-                isAlive = false;
+                Die();
             }
         }
        
@@ -91,6 +116,37 @@ abstract public class Role : MonoBehaviour
         }
     }
 
+    public virtual void Die() {
+        HP = 0;
+        isAlive = false;
+        if (notifyDied != null) {
+            notifyDied();
+        }
+        animationController.animationState = AnimationState.DIE;
+        eventHelper.notifyDiedEnd += OnDieAnimationEnd;
+
+        ItemDropController itemDropController = GetComponent<ItemDropController>();
+        if (itemDropController != null) {
+            itemDropController.Drop();
+        }
+
+        StartCoroutine(DestroyAfterDie());
+    }
+
+    private void OnDieAnimationEnd() {
+        GameObject prafabObj = prafabHolder.GetEffect("DieEffect");
+        GameObject dieEffect = Instantiate(prafabObj);
+        dieEffect.transform.position = this.transform.position;
+    }
+
+    private IEnumerator DestroyAfterDie() {
+        yield return new WaitForSeconds(0.1f);
+        GetComponent<Collider>().enabled = false;
+
+        yield return new WaitForSeconds(2f);
+        Destroy(this.gameObject);
+    }
+
     public virtual bool CanMove() {
         return statusManager.CanMove() && isAlive;
     }
@@ -103,49 +159,50 @@ abstract public class Role : MonoBehaviour
         return statusManager.CanAction() && isAlive;
     }
 
-
     public void AddSkill(GameObject skillPrafab) {
         Skill skill = skillPrafab.GetComponent<Skill>();
         if (skill != null) {
-            //Debug.Log("Add Skill " + skillPrafab.name + "  " + skill.skillName);
+            Debug.Log("Add Skill " + skillPrafab.name + "  " + skill.skillName);
             skill.owner = gameObject;
             skills.Add(skill);
-            skill.OnSkillAd();
+
+
+            skill.notifySkillReady += SkillReadyTrigger;
+            skill.OnSkillAdd();
             skill.ResetCD();
+
+            OnAddSkill(skill);
         }
+    }
+
+    protected virtual void OnAddSkill(Skill skill) {
+    }
+    private void SkillReadyTrigger(Skill skill) {
+        eventHelper.OnSkillReadyTrigger(skill);
     }
 
     public Skill GetMinCDSkill(SkillType[] skillTypes) {
         if (skills != null && skills.Count > 0) {
+          
+
             Skill minCdSkill = skills.Where(skill => skillTypes.Contains(skill.type))
-                .Select((skill, index) => new { skill, index })
-                .OrderBy(vi => vi.skill.CDLeft)
-                .First().skill;
+                .OrderBy(vi => vi.CDLeft)
+                .ThenBy(vi => vi.skillName)
+                .First();
+            //.Select((skill, index) => new { skill, index })
+
 
             return minCdSkill;
         }
         return null;
     }
 
-    void UpdateCD(Skill skill)
-    {
-        if (skill.CDLeft > 0)
-        {
-            skill.CDLeft -= Time.deltaTime;
-            //Debug.Log("UpdateCD " + skill.skillName + " " + skill.CDLeft);
-        }
-
-        if (skill.CDLeft <= 0)
-        {
-            skill.CDLeft = 0;
-            if (eventHelper != null) {
-                eventHelper.OnSkillReadyTrigger(skill);
-            }
-        }
-    }
     void UpdateAllSkillsCD()
     {
-        skills.ForEach(skill => UpdateCD(skill));
+        if (skills.Count > 0) {
+            //Debug.Log("UpdateAllSkillsCD " + skills.Count);
+            skills.ForEach(skill => skill.UpdateCD());
+        }
     }
 
     public void AddBuff(GameObject buffObj, Role caster)
@@ -192,8 +249,29 @@ abstract public class Role : MonoBehaviour
 
         return null;
     }
+
+    public float GetAttackRate()
+    {
+        return 10 / attribute.attackSpeed;
+    }
+
+    public virtual string GetBulletName() {
+        return "";
+    }
+
+    private TextUtils GetTextUtils() {
+        if (textUtils == null) {
+            GameObject gameManager = GameObject.FindGameObjectWithTag("GameController");
+            this.textUtils = gameManager.GetComponentInChildren<TextUtils>();
+        }
+
+        return textUtils;
+    }
     public virtual void Awake()
     {
+        GameObject gameManager = GameObject.FindGameObjectWithTag("GameController");
+        prafabHolder = gameManager.GetComponent<PrafabHolder>();
+
         if (attribute == null)
         {
             attribute = new RoleAttribute();
@@ -203,7 +281,11 @@ abstract public class Role : MonoBehaviour
             buffs = new List<BaseBuff>();
         }
 
+    }
+
+    public virtual void Start() {
         eventHelper = GetComponentInChildren<SimpleEventHelper>();
+        animationController = GetComponentInChildren<CustomAnimationController>();
     }
 
     // Update is called once per frame
@@ -212,15 +294,30 @@ abstract public class Role : MonoBehaviour
         UpdateAllSkillsCD();
     }
 
-    public string GetEnemyTag() {
-        switch (alignment) {
-            case AlignmentType.Player:
-            case AlignmentType.PlayerAlign:
-                return "Enemy";
-            case AlignmentType.Enemy:
-                return "Player";
+    public string[] GetEnemyTags() {
+        switch (roleType) {
+            case RoleType.Player:
+            case RoleType.PlayerMinion:
+                return new string[] { TagMapping.Enemy.ToString() };
+            case RoleType.EnemyMinion:
+            case RoleType.PrimaryEnemy:
+                return new string[] { TagMapping.Player.ToString(), TagMapping.Pet.ToString() };
             default:
-                return "Enemy";
+                return new string[] { TagMapping.Enemy.ToString() };
+        }
+    }
+
+    public string[] GetAlliesTags() {
+        switch (roleType)
+        {
+            case RoleType.Player:
+            case RoleType.PlayerMinion:
+                return new string[] { TagMapping.Player.ToString(), TagMapping.Pet.ToString() };
+            case RoleType.EnemyMinion:
+            case RoleType.PrimaryEnemy:
+                return new string[] { TagMapping.Enemy.ToString() };
+            default:
+                return new string[] { TagMapping.Player.ToString(), TagMapping.Pet.ToString() };
         }
     }
 

@@ -11,7 +11,7 @@ public class OrbSkill : Skill
 
     public GameObject staffEffectPrafab;
 
-    public override void OnSkillAd()
+    public override void OnSkillAdd()
     {
     }
 
@@ -40,6 +40,5 @@ public class OrbSkill : Skill
 
     void Awake()
     {
-        type = SkillType.ORB;
     }
 }

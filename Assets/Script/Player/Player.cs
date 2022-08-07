@@ -2,17 +2,51 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Player : Role
 {
     // Start is called before the first frame update
     PlayerMovementController playerMovementController;
     PlayerController playerController;
+    [Header("------------- Player Parameters --------------")]
     public int maxSkillTriggerTimes = 1;
+    public UISkillController uISkillController;
+    public LevelExpData levelExpData;
+
+    public Transform target {
+        get { return playerController.target; } 
+    }
+
+    public delegate void ExpGainDelegate(int exp);
+    public event ExpGainDelegate notifyExpGain;
+
+    public delegate void LevelUpDelegate(int level);
+    public event LevelUpDelegate notifyLevelUp;
 
     public bool CanAttack()
     {
         return base.CanAction() && !playerMovementController._isMoving && !isChanneling;
+    }
+
+    protected override void OnAddSkill(Skill skill)
+    {
+        uISkillController.FlushSpellSlot();
+    }
+
+    public Skill[] GetTopOrbSkillsOrderByCDLedt(int k) {
+        if (skills != null && skills.Count > 0)
+        {
+            Skill[] minCdSkill = skills.Where(skill => skill.type == SkillType.ORB)
+                .OrderBy(vi => vi.CDLeft)
+                .ThenBy(vi => vi.skillName)
+                .Take(k)
+                .ToArray();
+
+            return minCdSkill;
+        }
+
+        return null;
     }
 
     public override void Awake()
@@ -21,13 +55,18 @@ public class Player : Role
         playerMovementController = gameObject.GetComponentInParent<PlayerMovementController>();
         playerController = GetComponent<PlayerController>();
 
-        alignment = AlignmentType.Player;
+        roleType = RoleType.Player;
 
-        GameObject gameManager = GameObject.FindGameObjectWithTag("GameController");
-        PrafabHolder prafabHolder = gameManager.GetComponent<PrafabHolder>();
+        uISkillController = UIFinder.Instance.GetUISkillController();
 
-        GameObject MageFireBall = prafabHolder.GetSkill("MageFireBall");
-        AddSkill(MageFireBall);
+        //GameObject MageFireBall = prafabHolder.GetSkill("Mega Fire Ball");
+        //AddSkill(MageFireBall);
+
+        //GameObject AttackUp = prafabHolder.GetSkill("AttackUp");
+        //AddSkill(AttackUp);
+
+        //GameObject IceSpikeSkill = prafabHolder.GetSkill("IceSpike");
+        //AddSkill(IceSpikeSkill);
 
         //GameObject BlizardSkill = prafabHolder.GetSkill("Blizard");
         //AddSkill(BlizardSkill);
@@ -64,5 +103,26 @@ public class Player : Role
             default:
                 return playerController.shootPointMid;
         }
+    }
+
+    public void GainExperience(int exp) {
+        attribute.exp += exp;
+        if (notifyExpGain != null) {
+            notifyExpGain(exp);
+        }
+
+        if (levelExpData.CanLevelUp(attribute.level, attribute.exp)) {
+            attribute.level += 1;
+            attribute.exp -= levelExpData.expMap[attribute.level];
+
+            if (notifyLevelUp != null) {
+                notifyLevelUp(attribute.level);
+            }
+        }
+    }
+
+    public void LootSkills(int numberOfSkills) {
+
+
     }
 }

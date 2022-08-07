@@ -6,17 +6,81 @@ using System.Drawing;
 public class TextUtils : MonoBehaviour
 {
     private static bl_HUDText HUDRoot;
-    [SerializeField] private GameObject TextPrefab;
+    //[SerializeField] private GameObject TextPrefab;
     static int NORMAL_SIZE = 20;
     static int CRITICAL_SIZE = 30;
+    private const float UPDATE_INTERVAL = 0.2f;
+    private float pastInterval = 0f;
 
+    Dictionary<int, Queue<DamageDef>> damageList;
+    Dictionary<int, Transform> transformPool;
+
+    void Update() {
+        pastInterval += Time.deltaTime;
+        if (damageList.Count > 0 && pastInterval >= UPDATE_INTERVAL) {
+            pastInterval = 0;
+            ProcessText();
+        }
+    }
     void Start()
     {
         HUDRoot = bl_UHTUtils.GetHUDText;
+        damageList = new Dictionary<int, Queue<DamageDef>>();
+        transformPool = new Dictionary<int, Transform>();
     }
 
-    public static void HealText(Transform transform, float amount, bool isCritical) {
-        HUDTextInfo info = new HUDTextInfo(transform, string.Format("+{0}", ((int)amount).ToString()));
+    public void ProcessText() {
+        List<int> keyList = new List<int>(damageList.Keys);
+
+        foreach (int key in keyList)
+        {
+            Queue<DamageDef> damageQueues = damageList[key];
+            DamageDef damage = damageQueues.Dequeue();
+            Transform objTransform;
+            transformPool.TryGetValue(key, out objTransform);
+
+            if (objTransform != null && damage != null) {
+                if (damage.type == DamageType.HEAL)
+                {
+                    HealText(objTransform, damage.damage, damage.isCritical);
+                }
+                else {
+                    DamageText(objTransform, damage.damage, damage.isCritical, damage.type, damageQueues.Count);
+                }
+            }
+
+            if (damageQueues.Count == 0) {
+                RemoveDamgeEntry(key);
+            }
+            
+        }
+    }
+    private void RemoveDamgeEntry(int key) {
+        damageList.Remove(key);
+        transformPool.Remove(key);
+    }
+    public void AddDamageEntry(Transform objTransform, DamageDef damageDef) {
+        int id = objTransform.GetInstanceID();
+        if (transformPool.ContainsKey(id) && damageList.ContainsKey(id))
+        {
+            Queue<DamageDef> damageQueues;
+            damageList.TryGetValue(id, out damageQueues);
+            if (damageQueues != null)
+            {
+                damageQueues.Enqueue(damageDef);
+            }
+        }
+        else {
+            Queue<DamageDef> damageQueues = new Queue<DamageDef>();
+            damageQueues.Enqueue(damageDef);
+
+            damageList.Add(id, damageQueues);
+            transformPool.Add(id, objTransform);
+        }
+    }
+
+    public static void HealText(Transform transformObj, float amount, bool isCritical) {
+        HUDTextInfo info = new HUDTextInfo(transformObj, string.Format("+{0}", ((int)amount).ToString()));
         info.Size = GetSize(isCritical);
         info.Color = Color.green;
         info.VerticalPositionOffset = 3 + Random.Range(-1f, 1f);
@@ -25,12 +89,13 @@ public class TextUtils : MonoBehaviour
         WriteText(info);
     }
 
-    public static void DamageText(Transform transform, float amount, bool isCritical, DamageType type = DamageType.NORMAL) {
-        HUDTextInfo info = new HUDTextInfo(transform, string.Format("-{0}", ((int)amount).ToString()));
+    public static void DamageText(Transform transformObj, float amount, bool isCritical, DamageType type = DamageType.NORMAL, int RemaingCount = 0) {
+        HUDTextInfo info = new HUDTextInfo(transformObj, string.Format("-{0}", ((int)amount).ToString()));
         info.Size = GetSize(isCritical);
         info.Color = GetColor(type, isCritical);
-        info.VerticalPositionOffset = 3 + Random.Range(-1f, 1f);
+        info.VerticalPositionOffset = 3 + Random.Range(-RemaingCount, RemaingCount);
         info.FadeSpeed = 500;
+        //Debug.Log("remain " + RemaingCount + " " + info.VerticalPositionOffset);
 
         WriteText(info);
     }

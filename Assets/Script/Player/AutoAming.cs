@@ -15,6 +15,7 @@ public class AutoAming : MonoBehaviour
 
     [HideInInspector]
     public GameObject currentTarget;
+    private Enemy currentEnemy;
     private float AutoAttackDistance;
     public float rotationSpeed = 0.15f;
     int layer_mask;
@@ -37,7 +38,7 @@ public class AutoAming : MonoBehaviour
         playerMovementController = gameObject.GetComponentInParent<PlayerMovementController>();
         player = GetComponent<Player>();
         AutoAttackDistance = GetComponent<Role>().attackDistance;
-        layer_mask = LayerMask.GetMask("Enemy", "Wall");
+        layer_mask = LayerMask.GetMask(LayerMapping.Enemy.ToString(), LayerMapping.Wall.ToString());
         currentTarget = null;
 
         GameObject gameManager = GameObject.FindGameObjectWithTag("GameController");
@@ -63,7 +64,7 @@ public class AutoAming : MonoBehaviour
             CompareAndReplaceTarget(nextTarget);
         }
 
-        if (currentTarget == null) {
+        if (currentTarget == null || !currentEnemy.isAlive) {
             DisableIndicator();
         }
         //if (playerMovementController._isMoving) { // channelling
@@ -92,6 +93,7 @@ public class AutoAming : MonoBehaviour
             if (currentTarget == null || currentTarget.GetInstanceID() != nextTarget.GetInstanceID())
             {
                 currentTarget = nextTarget;
+                currentEnemy = nextTarget.GetComponent<Enemy>();
                 updateTime = 0;
                 EnableIndicator();
             }
@@ -159,7 +161,7 @@ public class AutoAming : MonoBehaviour
     }
 
     private GameObject[] GetAllEnemies() {
-        return GameObject.FindGameObjectsWithTag("Enemy");
+        return GameObject.FindGameObjectsWithTag(TagMapping.Enemy.ToString());
     }
 
     private GameObject[] GetVisiableEnemies(GameObject[] enemies) {
@@ -198,7 +200,7 @@ public class AutoAming : MonoBehaviour
 
     public bool HasAttackableTarget()
     {
-        return currentTarget != null && currentTarget.GetComponent<Role>().isAlive;
+        return currentTarget != null && currentEnemy.isAlive;
     }
     private bool NoTargetOrDied(GameObject target) {
         return target == null || !target.GetComponent<Role>().isAlive;
@@ -239,7 +241,7 @@ public class AutoAming : MonoBehaviour
         //Debug.DrawRay(playerSensorPos, targetDir, Color.blue);
         if (Physics.Raycast(playerSensorPos, targetDir, out hit, Mathf.Infinity, layer_mask))
         {
-            if (hit.collider.CompareTag("Enemy"))
+            if (hit.collider.CompareTag(TagMapping.Enemy.ToString()))
             {
                 //Debug.DrawRay(playerSensorPos, targetDir, Color.yellow, 1f);
                 return true;

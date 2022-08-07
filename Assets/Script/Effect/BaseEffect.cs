@@ -7,4 +7,5 @@ public class BaseEffect
 {
     public GameObject effect;
     public float duration = 1;
+    public float delay = 0.1f;
 }

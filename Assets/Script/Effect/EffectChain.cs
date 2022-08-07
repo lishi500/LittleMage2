@@ -6,7 +6,6 @@ using UnityEngine;
 public class EffectChain: BaseEffect
 {
     public PositionType positionType;
-    public float delay;
     public float xOffSet;
     public float yOffSet;
     public bool useRoleFacing = true;

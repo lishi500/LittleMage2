@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2216687734026695636
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2216687734026695633}
+  - component: {fileID: 2216687734026695634}
+  - component: {fileID: 2216687734026695635}
+  m_Layer: 0
+  m_Name: IceSpike
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2216687734026695633
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2216687734026695636}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 78.12521, y: 197.68979, z: 62.480347}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2216687734026695634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2216687734026695636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b947321b8361a5a44859ef1fca6e78e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillData: {fileID: 11400000, guid: 49141f7b67152d24aa847d5d87bf0880, type: 2}
+  duration: 0
+  baseValue: 120
+  factor: 0.5
+  castRange: 3.4028235e+38
+  damageType: 3
+  loopCast: 0
+  isChannelSkill: 0
+  shootPointPosition: 0
+  hasEffectController: 0
+  hasCollisionController: 0
+  needTarget: 1
+  isTargetAllies: 0
+  CDLeft: 5.627872
+  owner: {fileID: 0}
+  skillControllerObj: {fileID: 0}
+  effectChains: []
+  colliderChains: []
+  triggeredBuffDefs: []
+  onApplyBuffDefs: []
+  OnCastEffect:
+    effect: {fileID: 0}
+    duration: 1
+    delay: 0.1
+  OnTriggerEffect:
+    effect: {fileID: 0}
+    duration: 1
+    delay: 0.1
+  skillAnimations:
+    hasCustomSkillAnimation: 0
+    useSkillId: 1
+    isExclusiveAnimation: 1
+    animationNames: []
+  orbEnhancement: {fileID: 11400000, guid: 1b4a0666fe6e82f4baaed2bc4a3c4f45, type: 2}
+  bulletPrafab: {fileID: 8140763852444813427, guid: d96dc5730fc7a0640a473b8cdbfd285d,
+    type: 3}
+  bulletImpactPrafab: {fileID: 3420398969357708522, guid: 2422689791245b841812eece1f141f6b,
+    type: 3}
+  staffEffectPrafab: {fileID: 182490, guid: 722f421fa4365f64a82e19bb90338e87, type: 3}
+--- !u!114 &2216687734026695635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2216687734026695636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3af054878fcf5e4d95890f14da4e2b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  creator: {fileID: 0}
+  primaryTarget: {fileID: 0}
+  skill: {fileID: 0}
+  effectChainIndex: 0
+  colliderChainIndex: 0
+  pastTime: 0
+  position1: {fileID: 0}
+  position2: {fileID: 0}
+  direction: {x: 0, y: 0, z: 0}
+  isStarted: 0

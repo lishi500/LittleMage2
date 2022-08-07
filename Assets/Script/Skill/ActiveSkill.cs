@@ -7,18 +7,18 @@ public class ActiveSkill : Skill
     [Header("ActiveSkill")]
     public ReactEventType triggerType = ReactEventType.ATTACK;
 
-    public override void OnSkillAd()
+    public override void OnSkillAdd()
     {
-        GameObject gameManager = GameObject.FindGameObjectWithTag("GameController");
-        PrafabHolder prafabHolder = gameManager.GetComponent<PrafabHolder>();
+        //GameObject gameManager = GameObject.FindGameObjectWithTag("GameController");
+        //PrafabHolder prafabHolder = gameManager.GetComponent<PrafabHolder>();
 
-        GameObject skillHolderBuff = Instantiate(prafabHolder.SkillHolderBuff);
-        SkillHolderBuff buff = skillHolderBuff.GetComponent<SkillHolderBuff>();
-        buff.reactTypes.Add(triggerType);
-        buff.attachedSkillName = skillName;
-        buff.buffName = skillName + "-TriggerBuff";
+        //GameObject skillHolderBuff = Instantiate(prafabHolder.SkillHolderBuff);
+        //SkillHolderBuff buff = skillHolderBuff.GetComponent<SkillHolderBuff>();
+        //buff.reactTypes.Add(triggerType);
+        //buff.attachedSkillName = skillName;
+        //buff.buffName = skillName + "-TriggerBuff";
 
-        owner.GetComponent<Role>().AddBuff(skillHolderBuff, owner.GetComponent<Role>());
+        //owner.GetComponent<Role>().AddBuff(skillHolderBuff, owner.GetComponent<Role>());
 
     }
 
@@ -41,6 +41,5 @@ public class ActiveSkill : Skill
     // Start is called before the first frame update
     void Awake()
     {
-        type = SkillType.ACTIVE;
     }
 }

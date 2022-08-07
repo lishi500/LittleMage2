@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ public class OrbBullet : Bullet
         GameObject hit = collision.gameObject;
         contactPoint = collision.contacts[0];
 
-        if (hit.tag == creatorRole.GetEnemyTag())
+        if (creatorRole.GetEnemyTags().Contains(hit.tag))
         {
             TriggerSkill(hit);
             PlayOnHitEffect();

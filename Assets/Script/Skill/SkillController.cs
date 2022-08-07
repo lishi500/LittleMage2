@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +11,6 @@ public class SkillController : MonoBehaviour
     public Skill skill;
 
     protected PrafabHolder prafabHolder;
-    protected CommonUtils commonUtils;
 
     [HideInInspector]
     public int effectChainIndex;
@@ -42,7 +42,7 @@ public class SkillController : MonoBehaviour
 
         if (effectChain.useRoleFacing)
         {
-            Vector3 targetPos = GetPositionWithDistanceAndAngle(creator.transform, 10, 0);
+            Vector3 targetPos = SkillUtils.Instance.GetPositionWithDistanceAndAngle(creator.transform, 10, 0);
             effect.transform.LookAt(targetPos);
         }
 
@@ -54,11 +54,6 @@ public class SkillController : MonoBehaviour
        
     }
 
-    private Vector3 GetPositionWithDistanceAndAngle(Transform from, float distance, float angle)
-    {
-        Vector3 newPos = from.position + Quaternion.AngleAxis(angle, Vector3.up) * from.forward * distance;
-        return newPos;
-    }
 
     public void ShowBaseEffect(BaseEffect baseEffect, Vector3 position)
     {
@@ -100,67 +95,68 @@ public class SkillController : MonoBehaviour
         }
     }
 
-    void AddCollider(EffectCollider effectCollider, Vector3 position) {
-        //Debug.Log("AddCollider");
-        GameObject colliderHolder = GameObject.Instantiate(prafabHolder.ColliderHolder, position, Quaternion.identity);
-        SphereCollider collider = colliderHolder.AddComponent<SphereCollider>();
-        ColliderEventHelper colliderEventHelper = colliderHolder.GetComponent<ColliderEventHelper>();
-        colliderEventHelper.timeToLive = effectCollider.duration;
+    private EffectCollider gizmosCollider;
+    private Vector3 gizmosColliderPosition;
+    void ApplyCollider(EffectCollider effectCollider, Vector3 position) {
+        //Debug.Log("ApplyCollider");
+        gizmosCollider = effectCollider;
+        gizmosColliderPosition = position;
+        // ---------------
+        string[] targetTags = SkillUtils.Instance.GetSkillTargetsTags(skill);
+        List<Transform> collideObjs = null;
+        if (effectCollider.type == ColliderType.Sphere) {
+            collideObjs = AttackUtils.Instance.CircleCollision(position, effectCollider.radius, targetTags);
+        }
 
-        collider.radius = effectCollider.radius;
-        collider.isTrigger = effectCollider.isTrigger;
-
-        if (effectCollider.isTrigger) {
-            colliderEventHelper.notifyTriggerEnter += OnTriggerCollider;
-        } else {
-            colliderEventHelper.notifyCollisionEnter += OnEnterCollider;
+        if (collideObjs != null) {
+            foreach (Transform collide in collideObjs) {
+                bool continueProcess = skill.OnColliderTrigger(collide, colliderChainIndex);
+                if (continueProcess) {
+                    OnDefaultColliderTrigger(collide);
+                }
+            }
         }
     }
 
-    public virtual void OnEnterCollider(GameObject selfObj, Collision collision)
-    {
-        GameObject hit = collision.gameObject;
-        //Debug.Log("handle OnEnterCollider");
-
-        if (hit.tag == creator.GetComponent<Role>().GetEnemyTag())
-        {
-
-            ShowBaseEffect(skill.OnTriggerEffect, hit.transform.position);
-            Role hitRole = hit.GetComponent<Role>();
+    public virtual void OnDefaultColliderTrigger(Transform transform) {
+        ShowBaseEffect(skill.OnTriggerEffect, transform.position);
+        Role hitRole = transform.GetComponent<Role>();
+        if (hitRole != null) {
             skill.ApplyBuffsToRole(skill.triggeredBuffDefs, hitRole);
             hitRole.ReduceHealth(skill.CalculateValue());
         }
     }
 
-    public virtual void OnTriggerCollider(GameObject selfObj, Collider collider)
-    {
-        //Debug.Log("handle OnTriggerCollider");
-        if (collider.gameObject.tag == creator.GetComponent<Role>().GetEnemyTag())
-        {
-            ShowBaseEffect(skill.OnTriggerEffect, collider.transform.position);
-            Role hitRole = collider.gameObject.GetComponent<Role>();
-            skill.ApplyBuffsToRole(skill.triggeredBuffDefs, hitRole);
-            Debug.Log("OnTriggerCollider damage " + skill.CalculateValue());
-            hitRole.ReduceHealth(skill.CalculateValue());
+    private IEnumerator ShowEffectWithDelay(BaseEffect baseEffect, Vector3 position) {
+        if (baseEffect.effect != null) {
+            if (baseEffect.delay == 0) {
+                ShowBaseEffect(baseEffect, position);
+            } else
+            {
+                yield return new WaitForSeconds(baseEffect.delay);
+                ShowBaseEffect(baseEffect, position);
+            }
         }
+
+        yield return null;
     }
 
 
     void UpdateCollider()
     {
-      
         if (colliderChainIndex < skill.colliderChains.Count)
         {
             EffectCollider effectCollider = skill.colliderChains[colliderChainIndex];
            //  Debug.Log("UpdateCollider " + effectCollider.delay + " <= " + pastTime + " - " + (effectCollider.delay <= pastTime));
 
             if (effectCollider.delay <= pastTime) {
-                colliderChainIndex++;
-                AddCollider(effectCollider, effectCollider.center == null ? 
+                ApplyCollider(effectCollider, CommonUtils.Instance.IsPositionZero(effectCollider.center) ? 
                     GeneratePositionByType(effectCollider.position).position : effectCollider.center);
+                colliderChainIndex++;
             }
         }
     }
+
     void UpdateEffect()
     {
       
@@ -186,6 +182,8 @@ public class SkillController : MonoBehaviour
         // Draw a yellow sphere at the transform's position
         //Gizmos.color = Color.yellow;
         //Gizmos.DrawWireSphere(position1.position, 5);
+        // drawCollider
+        //Gizmos.DrawWireSphere(gizmosColliderPosition, gizmosCollider.radius);
     }
 
     public virtual void InitialSkill() {
@@ -197,6 +195,8 @@ public class SkillController : MonoBehaviour
         skill.StartCastSkill();
         OnSkillCast();
         isStarted = true;
+
+        StartCoroutine(ShowEffectWithDelay(skill.OnCastEffect, skill.owner.transform.position));
     }
 
     // Start is called before the first frame update
@@ -204,7 +204,6 @@ public class SkillController : MonoBehaviour
     {
         GameObject gameManager = GameObject.FindGameObjectWithTag("GameController");
         prafabHolder = gameManager.GetComponent<PrafabHolder>();
-        commonUtils = gameManager.GetComponentInChildren<CommonUtils>();
     }
 
     // Update is called once per frame

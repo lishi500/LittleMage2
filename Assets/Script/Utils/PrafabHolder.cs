@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DuloGames.UI;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class PrafabHolder : MonoBehaviour
     public GameObject Bullet;
     public GameObject OrbBullet;
     public BulletEnhancement defaultBulletEnhancement;
+    public UISpellDatabase skillData;
 
     [SerializeField]
     private StringGameObjectDictionary bulletStore = StringGameObjectDictionary.New<StringGameObjectDictionary>();

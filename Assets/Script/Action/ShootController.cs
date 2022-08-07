@@ -73,8 +73,14 @@ public class ShootController : MonoBehaviour
     }
     private Transform GetReceivePoint(Transform target)
     {
-        Transform receivePoint = target.Find("ReceivePoint");
-        return receivePoint != null ? receivePoint : target;
+        Transform receivePoint = target;
+
+        Role targetRole = target.GetComponent<Role>();
+        if (target != null) {
+            receivePoint = targetRole.GetShootPoint(ShootPointPosition.RECEIVE);
+        }
+
+        return receivePoint;
     }
     float getNextShootAngle(float totalAngle)
     {

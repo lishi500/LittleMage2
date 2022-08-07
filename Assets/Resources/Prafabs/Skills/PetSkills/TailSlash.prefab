@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2144219986784928429
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2144219986784928403}
+  - component: {fileID: 2144219986784928428}
+  m_Layer: 0
+  m_Name: TailSlash
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2144219986784928403
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144219986784928429}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -24.440224, y: -5.2934847, z: -12.02319}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2144219986784928428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144219986784928429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 017a53e3bdb4f1049a2ecade0525107f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillData: {fileID: 11400000, guid: 574319c040bf1804b9fd4130b187d640, type: 2}
+  duration: 1
+  baseValue: 50
+  factor: 1.2
+  castRange: 4.5
+  damageType: 1
+  loopCast: 0
+  isChannelSkill: 0
+  shootPointPosition: 0
+  hasEffectController: 0
+  hasCollisionController: 0
+  needTarget: 1
+  isTargetAllies: 0
+  CDLeft: 0
+  owner: {fileID: 0}
+  skillControllerObj: {fileID: 0}
+  effectChains: []
+  colliderChains:
+  - type: 0
+    position: 0
+    center: {x: 0, y: 0, z: 0}
+    radius: 5
+    delay: 0.1
+    duration: 2
+    isTrigger: 1
+  triggeredBuffDefs:
+  - buffObj: {fileID: 5501118437966373470, guid: 9ab67bfc1745e8240b33af8c67e79576,
+      type: 3}
+    overrideExisting: 0
+    duration: 0
+    frequency: 0
+    value: 0
+    factor: 0
+  onApplyBuffDefs: []
+  OnCastEffect:
+    effect: {fileID: 139900, guid: ea687209fd90aaa46a1538b4066b0cda, type: 3}
+    duration: 1
+    delay: 0.1
+  OnTriggerEffect:
+    effect: {fileID: 0}
+    duration: 1
+    delay: 0.1
+  skillAnimations:
+    hasCustomSkillAnimation: 1
+    useSkillId: 1
+    isExclusiveAnimation: 1
+    animationNames: []
+  triggerType: 0

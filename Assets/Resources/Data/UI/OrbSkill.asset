@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6694320caa0568e4fb296afa762666e1, type: 3}
+  m_Name: OrbSkill
+  m_EditorClassIdentifier: 
+  spells:
+  - ID: 41
+    Name: Mega Fire Ball
+    Icon: {fileID: 21300000, guid: 8588618ab3e30f74e9e313312619fc64, type: 3}
+    Description: 'Cast a mega fire ball, explode and knock enemy back '
+    Range: 0
+    Cooldown: 12
+    CastTime: 0
+    PowerCost: 0
+    Flags: 0
+  - ID: 42
+    Name: Ice Spike
+    Icon: {fileID: 21300000, guid: 91edcadfde8d35a448b0ca1f19f7a44a, type: 3}
+    Description: Form an ice spike, piercing through enemy and forzen what ever it
+      touchs
+    Range: 0
+    Cooldown: 18
+    CastTime: 0
+    PowerCost: 0
+    Flags: 0
+  - ID: 0
+    Name: 
+    Icon: {fileID: 0}
+    Description: 
+    Range: 0
+    Cooldown: 0
+    CastTime: 0
+    PowerCost: 0
+    Flags: 0

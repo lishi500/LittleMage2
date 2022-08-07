@@ -4,6 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Climb
+  - Fly
   - Shootable
   - Wall
   - Canvas
@@ -11,6 +13,11 @@ TagManager:
   - Buff
   - Enemy
   - Effect
+  - JoyStick
+  - UI
+  - Animal
+  - Water
+  - Pet
   layers:
   - Default
   - TransparentFX
@@ -31,9 +38,9 @@ TagManager:
   - Enemy
   - Bullet
   - Wall
-  - 
-  - 
-  - 
+  - Item
+  - Animal
+  - Pet
   - 
   - 
   - 
@@ -50,4 +57,13 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: HP Bar
+    uniqueID: 2446882017
+    locked: 0
+  - name: DamageText
+    uniqueID: 614487629
+    locked: 0
+  - name: Game UI
+    uniqueID: 365325679
     locked: 0

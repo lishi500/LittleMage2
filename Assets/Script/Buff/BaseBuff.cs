@@ -11,7 +11,9 @@ public abstract class BaseBuff : MonoBehaviour
     public BuffType type;
     public List<ReactEventType> reactTypes;
 
+    [HideInInspector]
     public Role caster;
+    [HideInInspector]
     public Role holder;
 
     public float value;
@@ -21,6 +23,7 @@ public abstract class BaseBuff : MonoBehaviour
     public bool isForever;
     public bool canDuplicate;
     public string attachedSkillName;
+    public int prioirty = 10; // 10 is lowest, 1 is highest
 
     public BaseEffect OnApplyEffect;
     public BaseEffect OnTriggerEffect;
@@ -40,8 +43,8 @@ public abstract class BaseBuff : MonoBehaviour
     [HideInInspector]
     public event OnBuffRemoveDelegate notifyBuffRemoved;
 
-
-    public abstract void OnBuffEvaluated();
+    public abstract BuffEvaluatorResult OnBuffEvaluated(BuffEvaluatorResult evaluatorResult);
+    public abstract void OnBuffTrigger();
     public abstract void OnBuffApply();
     public abstract void OnBuffRemove();
 
@@ -184,7 +187,7 @@ public abstract class BaseBuff : MonoBehaviour
     void Update()
     {
         UpdateTime();
-        OnBuffEvaluated();
+        OnBuffTrigger();
     }
 
     public int CalculateExpectedTirggerCount()

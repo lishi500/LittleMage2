@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
         if (nextOrbSkill == null) {
             OrbSkill OrbSkill = GetNextReadyOrbSkill();
             if (OrbSkill != null) {
-                Debug.Log("next ready orb skill " + OrbSkill.name);
+                //Debug.Log("next ready orb skill " + OrbSkill.name);
                 nextOrbSkill = OrbSkill;
                 attackController.CreateOrb(nextOrbSkill);
             }
@@ -101,7 +101,8 @@ public class PlayerController : MonoBehaviour
 
     public OrbSkill GetNextReadyOrbSkill() {
         Skill skill = player.GetMinCDSkill(orbSkillType);
-        if (skill != null && skill.CDLeft == 0) {
+        if (skill != null && skill.IsReady()) {
+            //Debug.Log("GetNextReadyOrbSkill ready: " + skill.skillName);
             return (OrbSkill) skill;
         }
 

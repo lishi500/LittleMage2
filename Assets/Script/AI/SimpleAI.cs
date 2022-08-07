@@ -50,15 +50,12 @@ public class SimpleAI : BaseAI
                 animationController.animationState = AnimationState.IDLE;
                 break;
             case AIState.PATROL:
-                animationController.animationState = AnimationState.WALK;
-                PartrolAction();
+                PatrolAction();
                 break;
             case AIState.APPROACHING:
-                animationController.animationState = AnimationState.RUN;
                 ApproachingAction();
                 break;
             case AIState.ATTACK:
-                animationController.animationState = AnimationState.ATTACK;
                 AttackAction();
                 break;
             case AIState.CAST:
@@ -85,61 +82,16 @@ public class SimpleAI : BaseAI
         }
     }
 
-    void PartrolAction() {
-        bool arrived = false;
-        if (progress == AIProgress.INIT)
-        {
-            patrolPoint = aiUtils.GenerateRandomPosition(gameObject.transform);
-            arrived = MoveToDestination(patrolPoint);
-            progress = AIProgress.RUNNING;
-        }
-        else if (progress == AIProgress.RUNNING)
-        {
-            arrived = MoveToDestination(patrolPoint);
-        }
+    // TODO fix, player + pet
+    public override GameObject GetTargetObject()
+    {
+        //Debug.Log("GetTargetObject Simple AI");
+        //if (currentRole.GetEnemyTag() == TagMapping.Player.ToString())
+        //{
+        //    return playerObj;
+        //}
 
-        if (arrived) {
-            //Debug.Log("End of PartrolAction ");
-            progress = AIProgress.END;
-        }
-    }
-
-    void ApproachingAction() {
-        bool arrived = false;
-        if (progress == AIProgress.INIT)
-        {
-            progress = AIProgress.RUNNING;
-        }
-
-        if (progress == AIProgress.RUNNING)
-        {
-            arrived = ChasingTarget(GetTargetObject().transform, currentRole.attackDistance);
-        }
-
-        if (arrived)
-        {
-          //  Debug.Log("End of ApproachingAction ");
-            progress = AIProgress.END;
-        }
-    }
-
-    void AttackAction() {
-        //Debug.Log("AttackAction" + progress);
-
-        if (progress == AIProgress.INIT || progress == AIProgress.RUNNING)
-        {
-            progress = AIProgress.RUNNING;
-            FaceAtTarget(GetTargetObject().transform);
-        }
-    }
-
-    void ReactHitAction() {
-        if (progress == AIProgress.INIT)
-        {
-            Debug.Log("SimpleAI ReactHitAction ");
-            progress = AIProgress.RUNNING;
-            animationController.RestartGetHit();
-        }
+        return playerObj;
     }
 
     public void OnMeeleAttackTrigger(string state)
@@ -171,7 +123,7 @@ public class SimpleAI : BaseAI
         if (state == "Trigger")
         {
             // Debug.Log("Triggerd attack: " + Time.time);
-            aiUtils.Shoot(gameObject, shootPoint, GetTargetObject().transform, currentRole.bulletName);
+            aiUtils.Shoot(gameObject, shootPoint, GetTargetObject().transform, currentRole.GetBulletName());
         }
         if (state == "End")
         {
@@ -190,7 +142,6 @@ public class SimpleAI : BaseAI
         eventHelper.notifyRangeAttack += OnRangeAttackTrigger;
         eventHelper.notifyGetHitEnd += OnReactHitEnd;
     }
-
 
     // Start is called before the first frame update
     void Start()

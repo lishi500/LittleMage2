@@ -4,17 +4,19 @@ using UnityEngine;
 
 public class EnhancementSkill : Skill
 {
-    public override void OnSkillAd()
+    public override void OnSkillAdd()
     {
-        GameObject gameManager = GameObject.FindGameObjectWithTag("GameController");
-        PrafabHolder prafabHolder = gameManager.GetComponent<PrafabHolder>();
+        //GameObject gameManager = GameObject.FindGameObjectWithTag("GameController");
+        //PrafabHolder prafabHolder = gameManager.GetComponent<PrafabHolder>();
 
-        GameObject skillHolderBuff = Instantiate(prafabHolder.SkillHolderBuff);
-        SkillHolderBuff buff = skillHolderBuff.GetComponent<SkillHolderBuff>();
-        buff.attachedSkillName = skillName;
-        buff.buffName = skillName + "-TriggerBuff";
+        //GameObject skillHolderBuff = Instantiate(prafabHolder.SkillHolderBuff);
+        //SkillHolderBuff buff = skillHolderBuff.GetComponent<SkillHolderBuff>();
+        //buff.attachedSkillName = skillName;
+        //buff.buffName = skillName + "-TriggerBuff";
 
-        owner.GetComponent<Role>().AddBuff(skillHolderBuff, owner.GetComponent<Role>());
+        //owner.GetComponent<Role>().AddBuff(skillHolderBuff, owner.GetComponent<Role>());
+
+        ApplyBuffsToRole(onApplyBuffDefs, owner.GetComponent<Role>());
     }
 
     public override void OnSkillCast()
@@ -23,7 +25,6 @@ public class EnhancementSkill : Skill
 
     public override void SkillSetup()
     {
-        ApplyBuffsToRole(onApplyBuffDefs, owner.GetComponent<Role>());
     }
 
     public override void UpdateCollider()

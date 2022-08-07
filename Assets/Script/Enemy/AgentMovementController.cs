@@ -23,4 +23,5 @@ public class AgentMovementController : BaseAgentController
         role = GetComponent<Role>();
         speed = role.attribute.moveSpeed;
     }
+
 }

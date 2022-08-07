@@ -10,5 +10,15 @@ public enum AIState
    ATTACK,
    CAST,
    FLEE,
-   REACT_HIT
+   REACT_HIT,
+
+   // Pet state
+   PLAY,
+   GUARD,
+   CREATE_ORB,
+   REST_RECOVER,
+   REVIVE,
+   FOLLOW,
+   FLY_TO
+
 }

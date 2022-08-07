@@ -5,16 +5,21 @@ using UnityEngine;
 public class Enemy : Role
 {
     [Header("Enemy")]
-    public string bulletName; 
+    public string bulletName;
 
-    void Start()
+    public override string GetBulletName()
     {
-        alignment = AlignmentType.Enemy;
+        return bulletName;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Awake()
     {
-        
+        base.Awake();
+        roleType = RoleType.EnemyMinion;
+        if (attribute.exp == 0) {
+            attribute.exp = 30;
+        }
+
+      
     }
 }

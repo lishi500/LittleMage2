@@ -22,20 +22,20 @@ MonoBehaviour:
   massMultiplier: 1
   multiBulletNumber: 0
   multiDecayedPercentage: 0.15
-  dartleBulletNumber: 0
+  dartleBulletNumber: 3
   dartleDecayedPercentage: 0.1
   dartleMinPercentage: 0.4
   splitBulletNumber: 0
   maxSplitTimes: 2
   splitDecayedPercentage: 0.4
   splitedTimeCount: 0
-  isPirercing: 0
+  isPirercing: 1
   isPirercingDecayed: 1
   pirercingDecayedPercentage: 0.25
   minPirercingDamagePercentage: 0.4
   maxNumberOfPirercing: 1000
   pirercingTriggeredCount: 0
-  isBounce: 0
+  isBounce: 1
   maxBounceCount: 3
   bounceDecayedPercentage: 0.3
   bouncedCount: 0
@@ -47,13 +47,13 @@ MonoBehaviour:
   knockBackDistance: 0
   explodeEffect: {fileID: 1121192042590650, guid: e1b08032bec16ba4eb1ae23cbd572664,
     type: 3}
-  isReturn: 0
+  isReturn: 1
   isReturnCaster: 1
   maxReturnDistance: 15
   returnDecayedPercentage: 0.5
   returnTriggered: 0
   returnComplete: 0
-  isTracking: 0
+  isTracking: 1
   trackingRange: 15
   trackingAngle: 90
   trackingIntensity: 5

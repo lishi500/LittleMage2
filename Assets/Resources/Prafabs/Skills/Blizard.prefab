@@ -43,31 +43,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 017a53e3bdb4f1049a2ecade0525107f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillName: Blizard
-  CD: 5
+  skillData: {fileID: 0}
   duration: 1
   baseValue: 50
   factor: 1.2
+  castRange: 3.4028235e+38
+  damageType: 3
   loopCast: 0
   isChannelSkill: 0
-  type: 0
+  shootPointPosition: 0
   hasEffectController: 0
   hasCollisionController: 0
   needTarget: 1
+  isTargetAllies: 0
   CDLeft: 3.4152896
   owner: {fileID: 0}
   skillControllerObj: {fileID: 0}
   effectChains:
   - effect: {fileID: 183924, guid: 0b308db01bc3ccb46a58960fba612974, type: 3}
     duration: 1
-    positionType: 1
     delay: 0
+    positionType: 1
     xOffSet: 0
     yOffSet: 0
     useRoleFacing: 1
-    followCaster: 0
+    followRole: 0
   colliderChains:
   - type: 0
+    position: 0
+    center: {x: 0, y: 0, z: 0}
     radius: 5
     delay: 0
     duration: 0.3
@@ -81,8 +85,18 @@ MonoBehaviour:
     value: 0
     factor: 0
   onApplyBuffDefs: []
+  OnCastEffect:
+    effect: {fileID: 0}
+    duration: 1
+    delay: 0.1
   OnTriggerEffect:
     effect: {fileID: 2859547069964035380, guid: eef272a6ac047c94fb851a534c340cc7,
       type: 3}
     duration: 1
+    delay: 0.1
+  skillAnimations:
+    hasCustomSkillAnimation: 0
+    useSkillId: 1
+    isExclusiveAnimation: 1
+    animationNames: []
   triggerType: 0

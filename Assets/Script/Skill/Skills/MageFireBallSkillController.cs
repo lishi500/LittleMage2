@@ -6,7 +6,7 @@ public class MageFireBallSkillController : OrbSkillController
 {
     public override void OnSkillCast()
     {
-        Debug.Log("OnSkillCast MageFireBallSkillController " + skill.skillName);
+        //Debug.Log("OnSkillCast MageFireBallSkillController " + skill.skillName);
 
     }
 

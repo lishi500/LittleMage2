@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4792905057713028000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4792905057713028002}
+  - component: {fileID: 4792905057713028003}
+  m_Layer: 0
+  m_Name: healOnceBuff
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4792905057713028002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4792905057713028000}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.7604218, y: 0.030578732, z: -2.2842674}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4792905057713028003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4792905057713028000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21f2038b5cf45dd46938f9158a01ff7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buffName: HealOnce
+  duration: 1
+  frequency: 99
+  type: 2
+  reactTypes: 
+  caster: {fileID: 0}
+  holder: {fileID: 0}
+  value: 500
+  factor: 0
+  isDeBuff: 0
+  isForever: 0
+  canDuplicate: 0
+  attachedSkillName: 
+  OnApplyEffect:
+    effect: {fileID: 105302, guid: e4a4dd0be891ef542a95aef4b72806c4, type: 3}
+    duration: 1
+  OnTriggerEffect:
+    effect: {fileID: 172390, guid: 41bdb11fe6d778b4c82f45b5787c050e, type: 3}
+    duration: 1
+  LivingEffect:
+    effect: {fileID: 0}
+    duration: 1
+  OtherEffects: []
+  tirggeredCount: 0
+  prafabHolder: {fileID: 0}

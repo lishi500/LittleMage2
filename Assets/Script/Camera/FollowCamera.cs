@@ -15,7 +15,7 @@ public class FollowCamera : MonoBehaviour
     void Start()
     {
         if (TargetToFollow == null) {
-            TargetToFollow = GameObject.FindGameObjectWithTag("Player");
+            TargetToFollow = GameObject.FindGameObjectWithTag(TagMapping.Player.ToString());
         }
     }
 

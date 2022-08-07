@@ -17,12 +17,16 @@ public abstract class CustomAnimationController : MonoBehaviour
     private List<ExceptionState> exceptionList;
     private Queue<ExceptionState> exceptionOnceQueue;
     protected float attackClipLength;
-
+     
 
     public string[] animationStates = new string[]
-    { "walk", "run", "attack", "fight_stance", "defence", "get_hit", "die", "cast", "channeling", "channeling_loop" };
+    { "walk", "run", "attack", "fight_stance", "defence", "get_hit", "die", "cast", "channeling", "channeling_loop",
+    "play", "fly"};
 
     public Dictionary<AnimationState, string> stateMapping = new Dictionary<AnimationState, string>() {
+
+        { AnimationState.NONE, "" },
+        { AnimationState.IDLE, "idle" },
         { AnimationState.WALK, "walk" },
         { AnimationState.RUN, "run" },
         { AnimationState.ATTACK, "attack" },
@@ -33,6 +37,13 @@ public abstract class CustomAnimationController : MonoBehaviour
         { AnimationState.CAST, "cast" },
         { AnimationState.CHANNELING, "channeling" },
         { AnimationState.CHANNELING_LOOP, "channeling_loop" },
+        // dragon
+        { AnimationState.FLY, "fly"},
+        { AnimationState.PLAY, "play"},
+        // parameters
+        { AnimationState.RANDOM_100, "Random 100"},
+        { AnimationState.FLY_PROGRESS, "fly_progress"},
+        { AnimationState.SKILL_ANIMATION, "skill_animation"}
 
     };
 
@@ -41,17 +52,27 @@ public abstract class CustomAnimationController : MonoBehaviour
     public void SetAllFalse() {
         SetBoolState("");
     }
+
+    public void SetBoolState(AnimationState state)
+    {
+        SetBoolState(GetStateMapping(state));
+    }
+
     public void SetBoolState(string stateName)
     {
-        foreach (string state in animationStates)
+        //Debug.Log("- SetBoolState -" + stateName);
+        foreach (AnimatorControllerParameter param in animator.parameters)
         {
-            if (state == stateName)
+            if (param.type == AnimatorControllerParameterType.Bool)
             {
-                SetBool(state, true);
-            }
-            else
-            {
-                SetBool(state, false);
+                if (param.name == stateName)
+                {
+                    animator.SetBool(param.name, true);
+                }
+                else
+                {
+                    animator.SetBool(param.name, false);
+                }
             }
         }
     }
@@ -67,9 +88,7 @@ public abstract class CustomAnimationController : MonoBehaviour
     {
         foreach (AnimationState state in states)
         {
-            string animationName;
-            stateMapping.TryGetValue(state, out animationName);
-            SetBoolState(animationName);
+            SetBoolState(GetStateMapping(state));
         }
     }
 
@@ -96,10 +115,25 @@ public abstract class CustomAnimationController : MonoBehaviour
         animator.SetFloat("attack_speed_multiplier", multiplier);
     }
 
+  
+    public void SetBool(AnimationState name, bool state)
+    {
+        SetBool(GetStateMapping(name), state);
+    }
+    public void SetFloat(AnimationState name, float value)
+    {
+        SetFloat(GetStateMapping(name), value);
+    }
+    public void SetInt(AnimationState name, int value)
+    {
+        SetInt(GetStateMapping(name), value);
+    }
+
     protected void SetBool(string name, bool state)
     {
         if (ContainsParam(animator, name))
         {
+            //Debug.Log("Set Bool " + name + " -> " + state);
             animator.SetBool(name, state);
         }
     }
@@ -116,7 +150,40 @@ public abstract class CustomAnimationController : MonoBehaviour
         if (ContainsParam(animator, name))
         {
             animator.SetInteger(name, value);
+            //Debug.Log("Set Int " + name + " " + value);
         }
+    }
+
+    public void AddAutoClearState(AnimationState name, bool state, bool isExclusive = true, float time = 0.2f)
+    {
+        //Debug.Log("AddAutoClearState " + name);
+        if (isExclusive)
+        {
+            //animationState = AnimationState.NONE;
+            SetBoolState(name);
+        }
+        else {
+            AddExceptionOnce(name, state);
+        }
+       
+        StartCoroutine(ClearState(name, !state, time));
+    }
+
+    private IEnumerator ClearState(AnimationState name, bool state, float time)
+    {
+        yield return new WaitForSeconds(time);
+        //Debug.Log("ClearState " + name + "  " + state);
+        AddExceptionOnce(name, state);
+
+        yield return null;
+    }
+
+    private string GetStateMapping(AnimationState name)
+    {
+        string animationName;
+        stateMapping.TryGetValue(name, out animationName);
+
+        return animationName;
     }
 
     // listener
@@ -164,7 +231,7 @@ public abstract class CustomAnimationController : MonoBehaviour
         //animationState = AnimationState.GET_HIT;
         if (animationState == AnimationState.GET_HIT)
         {
-            Debug.Log("RestartGetHit");
+            //Debug.Log("RestartGetHit");
             animator.Play(0, 0, 0f);
         }
 
@@ -184,13 +251,22 @@ public abstract class CustomAnimationController : MonoBehaviour
         return null;
     }
 
+    public void AddException(AnimationState name, bool state)
+    {
+        AddException(GetStateMapping(name), state);
+    }
     public void AddException(string name, bool state)
     {
         exceptionList.Add(new ExceptionState(name, state));
     }
+
+    public void AddExceptionOnce(AnimationState name, bool state)
+    {
+        AddExceptionOnce(GetStateMapping(name), state);
+    }
     public void AddExceptionOnce(string name, bool state)
     {
-        exceptionList.Add(new ExceptionState(name, state));
+        exceptionOnceQueue.Enqueue(new ExceptionState(name, state));
     }
     public void ClearException()
     {

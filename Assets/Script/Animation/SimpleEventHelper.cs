@@ -33,6 +33,9 @@ public class SimpleEventHelper : MonoBehaviour
     public delegate void DieDelegate(string state);
     public event DieDelegate notifyDied;
 
+    public delegate void DieAnimationEndDelegate();
+    public event DieAnimationEndDelegate notifyDiedEnd;
+
     public delegate void EnemyEnterOuterZoneDelegate(string state);
     public event EnemyEnterOuterZoneDelegate notifyEnemyEnterOuterZone;
 
@@ -41,7 +44,11 @@ public class SimpleEventHelper : MonoBehaviour
 
     public delegate void FirstPhaseCompleteDelegate(AnimationState animationState);
     public event FirstPhaseCompleteDelegate notifyFirstPhaseComplete;
-    public void OnMeleeAttackTrigger(string state)
+
+    public delegate void SkillAnimationEndDelegate();
+    public event SkillAnimationEndDelegate notifySkillAnimationEnd;
+
+    public virtual void OnMeleeAttackTrigger(string state)
     {
         if (notifyMeleeAttack != null)
         {
@@ -85,11 +92,25 @@ public class SimpleEventHelper : MonoBehaviour
         }
     }
 
+    public void OnDieEnd()
+    {
+        if (notifyDiedEnd != null) { 
+            notifyDiedEnd();
+        }
+    }
+
+
     public void OnFirstPhaseComplete(string stateName) {
         //Debug.Log("OnFirstPhaseComplete " + stateName);
         if (notifyFirstPhaseComplete != null) {
             AnimationState animationState = (AnimationState)System.Enum.Parse(typeof(AnimationState), stateName);
             notifyFirstPhaseComplete(animationState);
+        }
+    }
+
+    public void OnSkillAnimationEnd() {
+        if (notifySkillAnimationEnd != null) {
+            notifySkillAnimationEnd();
         }
     }
 

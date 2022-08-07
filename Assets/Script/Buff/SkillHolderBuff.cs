@@ -1,11 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Obsolete]
 public class SkillHolderBuff : BaseBuff
 {
     private Skill skill;
     private PlayerController playerController;
+
+    [Obsolete]
     public override void OnAttack(string state)
     {
         if (reactTypes.Contains(ReactEventType.ATTACK)) {
@@ -45,7 +49,7 @@ public class SkillHolderBuff : BaseBuff
     {
     }
 
-    public override void OnBuffEvaluated()
+    public override void OnBuffTrigger()
     {
         //Debug.Log("OnBuffEvaluated");
         if (reactTypes.Contains(ReactEventType.SKILL_READY)) {
@@ -74,4 +78,10 @@ public class SkillHolderBuff : BaseBuff
             reactTypes = new List<ReactEventType>();
         }
     }
+
+    public override BuffEvaluatorResult OnBuffEvaluated(BuffEvaluatorResult evaluatorResult)
+    {
+        return evaluatorResult;
+    }
+
 }

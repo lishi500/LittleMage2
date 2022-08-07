@@ -5,20 +5,6 @@ using UnityEngine;
 
 public class DotBuff : BaseBuff
 {
-
-    public override void OnBuffEvaluated()
-    {
-        int expectedCount = CalculateExpectedTirggerCount();
-        //Debug.Log("OnBuffEvaluated " + expectedCount + "  " + tirggeredCount);
-        if (expectedCount > tirggeredCount) {
-            //Debug.Log("Trigger " + expectedCount);
-            TriggerDot();
-            ShowEffect(OnTriggerEffect);
-            tirggeredCount++;
-        }
-    }
-
-  
     private void TriggerDot() {
         float damage = CalculatValue();
        
@@ -39,6 +25,24 @@ public class DotBuff : BaseBuff
 
     public override void OnBuffRemove()
     {
+    }
+
+    public override BuffEvaluatorResult OnBuffEvaluated(BuffEvaluatorResult evaluatorResult)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void OnBuffTrigger()
+    {
+        int expectedCount = CalculateExpectedTirggerCount();
+        //Debug.Log("OnBuffEvaluated " + expectedCount + "  " + tirggeredCount);
+        if (expectedCount > tirggeredCount)
+        {
+            //Debug.Log("Trigger " + expectedCount);
+            TriggerDot();
+            ShowEffect(OnTriggerEffect);
+            tirggeredCount++;
+        }
     }
 
     // Update is called once per frame
